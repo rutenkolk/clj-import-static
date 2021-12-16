@@ -24,7 +24,7 @@ import static java.util.List.*
 
 == Why?
 
-When you want to refer to constants and methods in java Classes. 
+When you want to refer to constants and static methods in java Classes. 
 
 === But why import static *
 
