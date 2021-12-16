@@ -34,7 +34,7 @@ Sometimes you need to interop with a Library written in Java, Frege, Kotlin etc.
 
 In these circumstances one might want to import all the static methods and fields from those classes, since after a certain size it's really infeasible to enumerate them all by hand.
 
-Take for Example LWJGLs OpenGL classes. If you static import all the methods and fields, this lets you effortlessly write code like this:
+Take for example LWJGLs OpenGL classes. If you static import all the methods and fields, this lets you effortlessly write code like this:
 
 [source,clojure]
 ----
@@ -50,9 +50,14 @@ Take for Example LWJGLs OpenGL classes. If you static import all the methods and
 == Usage
 
 === import-static
+
+[source,clojure]
+----
 `(defmacro import-static [input-class-symbol & member-symbols])`
-Static imports all SPECIFIED methods and fields (as given by `member-symbols`) of a java class (as given by `input-class-symbol`).
-tries to emulate a `import static CLASSNAME.SOME_THING;` statement.
+----
+
+Static imports all specified methods and fields (as given by `member-symbols`) of a java class (as given by `input-class-symbol`).
+Tries to emulate a `import static CLASSNAME.SOME_THING;` statement.
 This will define private clojure functions which wrap the static java method, and define private vars for all static fields in a class, assuming them to be constants.
 
 It will overwrite existing bindings.
