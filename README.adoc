@@ -12,10 +12,6 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-[![Build Status](https://travis-ci.org/rutenkolk/clj-import-static.svg?branch=master)](https://travis-ci.org/rutenkolk/clj-import-static)
-[![codecov](https://codecov.io/gh/rutenkolk/clj-import-static/branch/master/graph/badge.svg)](https://codecov.io/gh/rutenkolk/clj-import-static)
-[![Clojars Project](https://img.shields.io/clojars/v/clj-import-static.svg)](https://clojars.org/clj-import-static)
-
 == What is this?
 
 A Clojure library to help with static imports of Java Classes. Basically something to achieve a similar effect to the following java import statements:
@@ -38,7 +34,7 @@ Sometimes you need to interop with a Library written in Java, Frege, Kotlin etc.
 
 In these circumstances one might want to import all the static methods and fields from those classes, since after a certain size it's really infeasible to enumerate them all by hand.
 
-Take for Example LWJGLs OpenGL classes. If you static import all the methods and fields, this lets you write code like this:
+Take for Example LWJGLs OpenGL classes. If you static import all the methods and fields, this lets you effortlessly write code like this:
 
 [source,clojure]
 ----
