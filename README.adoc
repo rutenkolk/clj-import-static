@@ -1,0 +1,106 @@
+= clj-import-static
+16.12.2021
+:experimental:
+:icons: font
+:icon-set: octicon
+:source-highlighter: rouge
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[![Build Status](https://travis-ci.org/rutenkolk/clj-import-static.svg?branch=master)](https://travis-ci.org/rutenkolk/clj-import-static)
+[![codecov](https://codecov.io/gh/rutenkolk/clj-import-static/branch/master/graph/badge.svg)](https://codecov.io/gh/rutenkolk/clj-import-static)
+[![Clojars Project](https://img.shields.io/clojars/v/clj-import-static.svg)](https://clojars.org/clj-import-static)
+
+== What is this?
+
+A Clojure library to help with static imports of Java Classes. Basically something to achieve a similar effect to the following java import statements:
+
+[source,java]
+----
+import static java.lang.Character.CodePointAt;
+import static java.util.List.*
+----
+
+== Why?
+
+When you want to refer to constants and methods in java Classes. 
+
+=== But why import static *
+
+Star imports are sometimes considered harmful even in java. So why would anyone want to use this?
+
+Sometimes you need to interop with a Library written in Java, Frege, Kotlin etc. and do not have control over how other people design the layout of their class files. Sometimes the underlying code may even be machine-generated with tools like java-cpp.
+
+In these circumstances one might want to import all the static methods and fields from those classes, since after a certain size it's really infeasible to enumerate them all by hand.
+
+Take for Example LWJGLs OpenGL classes. If you static import all the methods and fields, this lets you write code like this:
+
+[source,clojure]
+----
+(fn [loc [tex-id buf-id]] 
+ (glActiveTexture (+ GL_TEXTURE0 loc)) 
+ (glBindTexture GL_TEXTURE_BUFFER tex-id) 
+ (glTexBuffer 
+   GL_TEXTURE_BUFFER (samplerBuffer-type-to-image-format t) buf-id)
+ (glUniform1i loc loc))
+----
+
+
+== Usage
+
+=== import-static
+`(defmacro import-static [input-class-symbol & member-symbols])`
+Static imports all SPECIFIED methods and fields (as given by `member-symbols`) of a java class (as given by `input-class-symbol`).
+tries to emulate a `import static CLASSNAME.SOME_THING;` statement.
+This will define private clojure functions which wrap the static java method, and define private vars for all static fields in a class, assuming them to be constants.
+
+It will overwrite existing bindings.
+
+For example:
+
+If you already have a var `foo` bound, `CLASSNAME/foo` WILL overwrite `foo`.
+
+Will generate a multiple-arity function var for static methods with different arity versions.
+For example: `java.lang.Character/codePointAt` has 3 versions. One version has 2 parameters and two other versions have 3 parameters and differ only in the input types.
+
+[source, java]
+----
+static int codePointAt(char[] a, int index)
+static int codePointAt(char[] a, int index, int limit)
+static int codePointAt(CharSequence seq, int index)
+----
+
+This macro will define one `codePointAt` function-var with 2 different arities:
+
+[source,clojure]
+----
+(defn- codePointAt
+ ([G__11919 G__11920] (java.lang.Character/codePointAt G__11919 G__11920))
+ ([G__11921 G__11922 G__11923] (java.lang.Character/codePointAt G__11921 G__11922 G__11923)))
+----
+
+=== import-static-macro
+
+=== import-static-all-once
+
+=== import-static-all
+
+=== import-static-all-once-multiple
+
+=== import-static-all-multiple
+
+
+== Open TODOs
+
+Deduplicate code
+
+== License
+
+Copyright © 2021 Kristin Rutenkolk
+
+Distributed under the Eclipse Public License 2
