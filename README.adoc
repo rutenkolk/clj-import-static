@@ -30,7 +30,7 @@ When you want to refer to constants and static methods in java Classes.
 
 Star imports are sometimes considered harmful even in java. So why would anyone want to use this?
 
-Sometimes you need to interop with a Library written in Java, Frege, Kotlin etc. and do not have control over how other people design the layout of their class files. Sometimes the underlying code may even be machine-generated with tools like java-cpp.
+Sometimes you need to interop with a Library that exposes functionality as a bunch of static Methods in one or multiple classes. They may be written in Java, or a jvm-hosted language. Sometimes the underlying code may even be machine-generated with tools like java-cpp.
 
 In these circumstances one might want to import all the static methods and fields from those classes, since after a certain size it's really infeasible to enumerate them all by hand.
 
